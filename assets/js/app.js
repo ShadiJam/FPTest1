@@ -36,7 +36,7 @@ const Nav = () =>
         </div>
         <div className="pt-navbar-group pt-align-right">
             <button className="pt-button pt-minimal pt-icon-home">Home</button>
-            <button className="pt-button pt-minimal pt-icon-document">Files</button>
+            <button className="pt-button pt-minimal pt-icon-document">Tasks</button>
             <span className="pt-navbar-divider"></span>
             <button className="pt-button pt-minimal pt-icon-user"></button>
             <button className="pt-button pt-minimal pt-icon-notifications"></button>

@@ -11,9 +11,9 @@ public class EventController : CRUDController<Event> {
 public class NotificationController : CRUDController<Notification> {
     public NotificationController(IRepository<Notification> r) : base(r){}
 }
-[Route("/api/taskassign")]
-public class TaskAssignController : CRUDController<TaskAssign> {
-    public TaskAssignController(IRepository<TaskAssign> r) : base(r){}
+[Route("/api/tasking")]
+public class TaskingController : CRUDController<Tasking> {
+    public TaskingController(IRepository<Tasking> r) : base(r){}
 
     [HttpGet("search")]
     public IActionResult Search([FromQuery]string term, int listId = -1){

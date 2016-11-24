@@ -139,7 +139,7 @@ public class Event : HasId {
     public DateTime LoadInStart { get; set; }
     public DateTime LoadOutEnd { get; set; }
     public IEnumerable<Notification> Notifications { get; set; }
-    public IEnumerable<TaskAssign> Tasks { get; set; }
+    public IEnumerable<Tasking> Tasks { get; set; }
     public IEnumerable<Advance> Advances { get; set; }
     public IEnumerable<Contact> Contacts { get; set; }
     public IEnumerable<Department> Departments { get; set; }
@@ -165,7 +165,7 @@ public class Notification : HasId {
     public int ContactId { get; set; } //foreign key
     public Task task { get; set; }
     public int TaskId { get; set; }
-    public IEnumerable<TaskAssign> Tasks { get; set; }
+    public IEnumerable<Tasking> Tasks { get; set; }
     public IEnumerable<Contact> Contacts { get; set; } // can a class have both? do either need to be instantiated?
     public Advance advance { get; set; }
     public int AdvanceId { get; set; } // because each element of an advance has an advanceId foreign key, all notifications with that same key will be connected correct?
@@ -220,7 +220,7 @@ public class Advance : HasId {
     public Vendor vendor { get; set; }
     public int VendorId { get; set; } //foreign key
     public IEnumerable<Vendor> Vendors { get; set; }
-    public IEnumerable<TaskAssign> Tasks { get; set; }
+    public IEnumerable<Tasking> Tasks { get; set; }
     public IEnumerable<Credential> Credentials { get; set; }
     public IEnumerable<StaffShirt> StaffShirts { get; set; }
     public IEnumerable<Parking> ParkingPasses { get; set; }
@@ -255,7 +255,7 @@ public class Contact : HasId {
     public Notification notification { get; set; }
     public int NotificationId { get; set; }
     public IEnumerable<Advance> Advances { get; set; }
-    public IEnumerable<TaskAssign> Tasks { get; set; }
+    public IEnumerable<Tasking> Tasks { get; set; }
     public IEnumerable<Notification> Notifications { get; set; }
     
 }
@@ -281,7 +281,7 @@ public class Department : HasId {
     public IEnumerable<Contact> Contacts { get; set; }
     public IEnumerable<Vendor> Vendors { get; set; }
     public IEnumerable<Advance> Advances { get; set; }
-    public IEnumerable<TaskAssign> Tasks { get; set; }
+    public IEnumerable<Tasking> Tasks { get; set; }
     public IEnumerable<Notification> Notifications { get; set; }
     
 }
@@ -306,7 +306,7 @@ public class Vendor : HasId {
     public IEnumerable<GolfCart> GolfCarts { get; set; }
     public IEnumerable<Catering> Meals { get; set; }
     public IEnumerable<Contact> Contacts { get; set; }
-    public IEnumerable<TaskAssign> Tasks { get; set; }
+    public IEnumerable<Tasking> Tasks { get; set; }
     public IEnumerable<Notification> Notifications { get; set; }
 }
 public class Credential : HasId {
