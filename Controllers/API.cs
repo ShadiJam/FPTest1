@@ -49,6 +49,7 @@ public class AdvanceController : CRUDController<Advance> {
             || advance.DepartmentLead.ToLower().IndexOf(term.ToLower()) != -1
             || advance.EventName.ToLower().IndexOf(term.ToLower()) != -1
         ))); // figure out how to search by duedate
+    }
 }
 
 [Route("/api/credential")]
@@ -89,4 +90,5 @@ public class GolfCartController : CRUDController<GolfCart> {
 [Route("/api/catering")]
 public class CateringController : CRUDController<Catering> {
     public CateringController(IRepository<Catering> r) : base(r){}
+    
 }
