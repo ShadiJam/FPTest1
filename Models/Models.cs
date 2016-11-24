@@ -172,7 +172,7 @@ public class Notification : HasId {
     public IEnumerable<Advance> Advances { get; set; }
     
 }
-public class TaskAssign : HasId {
+public class Tasking : HasId {
     public int Id { get; set; }
     public DateTime DateAssigned { get; set; }
     public DateTime DueDate { get; set;}
@@ -491,7 +491,7 @@ public class Catering : HasId {
 public partial class DB : IdentityDbContext<IdentityUser> {
     public DbSet<Event> Events { get; set; }
     public DbSet<Notification> Notifications { get; set; }
-    public DbSet<TaskAssign> Tasks { get; set; }
+    public DbSet<Tasking> Tasks { get; set; }
     public DbSet<Advance> Advances { get; set; }
     public DbSet<Contact> Contacts { get; set; }
     public DbSet<Department> Departments { get; set; }
@@ -518,7 +518,7 @@ public partial class Handler {
                 .ThenInclude(n => n.department.DeptName)
                 .Include(t => t.Title)
                 .Include(m => m.Message));
-        Repo<TaskAssign>.Register(services, "Tasks",
+        Repo<Tasking>.Register(services, "Tasks",
             d => d.Include(c => c.contact)
                 .ThenInclude(n => n.department.DeptName)
                 .Include(n => n.TaskName)
