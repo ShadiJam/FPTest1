@@ -131,25 +131,48 @@ Roles
 **Find out if I need to include both Advance advance AND list of advances to each class 
 
 */
-
+public class Event : HasId {
+    public int Id { get; set; }
+    public string Name { get; set; }
+    public DateTime EventStart { get; set; }
+    public DateTime EventEnd { get; set; }
+    public DateTime LoadInStart { get; set; }
+    public DateTime LoadOutEnd { get; set; }
+    public IEnumerable<Notification> Notifications { get; set; }
+    public IEnumerable<TaskAssign> Tasks { get; set; }
+    public IEnumerable<Advance> Advances { get; set; }
+    public IEnumerable<Contact> Contacts { get; set; }
+    public IEnumerable<Department> Departments { get; set; }
+    public IEnumerable<Vendor> Vendors { get; set; }
+    public IEnumerable<Credential> Credentials { get; set; }
+    public IEnumerable<StaffShirt> StaffShirts { get; set; }
+    public IEnumerable<Parking> ParkingPasses { get; set; }
+    public IEnumerable<Hotel> Hotels { get; set; }
+    public IEnumerable<PettyCash> PCs { get; set; }
+    public IEnumerable<Radio> Radios { get; set; }
+    public IEnumerable<GolfCart> GolfCarts { get; set; }
+    public IEnumerable<Catering> Meals { get; set; }
+}
 public class Notification : HasId {
     public int Id { get; set; }
     public DateTime createdAt { get; set; }
     public string Title { get; set; }
     public string Message { get; set; }
+    public Event Event { get; set; }
+    public int EventId { get; set; }
     [Required]
     public Contact contact { get; set; }
     public int ContactId { get; set; } //foreign key
     public Task task { get; set; }
     public int TaskId { get; set; }
-    public IEnumerable<Task> Tasks { get; set; }
+    public IEnumerable<TaskAssign> Tasks { get; set; }
     public IEnumerable<Contact> Contacts { get; set; } // can a class have both? do either need to be instantiated?
     public Advance advance { get; set; }
     public int AdvanceId { get; set; } // because each element of an advance has an advanceId foreign key, all notifications with that same key will be connected correct?
     public IEnumerable<Advance> Advances { get; set; }
     
 }
-public class Task : HasId {
+public class TaskAssign : HasId {
     public int Id { get; set; }
     public DateTime DateAssigned { get; set; }
     public DateTime DueDate { get; set;}
@@ -170,6 +193,8 @@ public class Task : HasId {
     public Advance advance { get; set; }
     public int AdvanceId { get; set; }
     public IEnumerable<Advance> Advances { get; set; }
+    public Event Event { get; set; }
+    public int EventId { get; set; }
 }
 public class Advance : HasId {
     public int Id { get; set; }
@@ -179,6 +204,9 @@ public class Advance : HasId {
     public bool AdvanceSubmitted { get; set; } = false;
     public bool AdvanceReceived { get; set; } = false;
     public bool AdvanceApproved { get; set; }
+    [Required]
+    public Event Event { get; set; }
+    public int EventId { get; set; }
     public Notification notification { get; set; }
     public int NotificationId { get; set; }
     public IEnumerable<Notification> Notifications { get; set; }
@@ -192,7 +220,7 @@ public class Advance : HasId {
     public Vendor vendor { get; set; }
     public int VendorId { get; set; } //foreign key
     public IEnumerable<Vendor> Vendors { get; set; }
-    public IEnumerable<Task> Tasks { get; set; }
+    public IEnumerable<TaskAssign> Tasks { get; set; }
     public IEnumerable<Credential> Credentials { get; set; }
     public IEnumerable<StaffShirt> StaffShirts { get; set; }
     public IEnumerable<Parking> ParkingPasses { get; set; }
@@ -215,6 +243,8 @@ public class Contact : HasId {
     public string ContactEmail { get; set; }
     [Required]
     public long ContactPhone { get; set; }
+    public Event Event { get; set; }
+    public int EventId { get; set; }
     [Required]
     public Department department { get; set; }
     public int DepartmentId { get; set; } //foreign key
@@ -225,7 +255,7 @@ public class Contact : HasId {
     public Notification notification { get; set; }
     public int NotificationId { get; set; }
     public IEnumerable<Advance> Advances { get; set; }
-    public IEnumerable<Task> Tasks { get; set; }
+    public IEnumerable<TaskAssign> Tasks { get; set; }
     public IEnumerable<Notification> Notifications { get; set; }
     
 }
@@ -234,6 +264,8 @@ public class Department : HasId {
     public int Id { get; set; }
     [Required]
     public string DeptName { get; set; }
+    public Event Event { get; set; }
+    public int EventId { get; set; }
     [Required]
     public string DeptLead { get; set; }
     public Advance advance { get; set; }
@@ -249,13 +281,15 @@ public class Department : HasId {
     public IEnumerable<Contact> Contacts { get; set; }
     public IEnumerable<Vendor> Vendors { get; set; }
     public IEnumerable<Advance> Advances { get; set; }
-    public IEnumerable<Task> Tasks { get; set; }
+    public IEnumerable<TaskAssign> Tasks { get; set; }
     public IEnumerable<Notification> Notifications { get; set; }
     
 }
 public class Vendor : HasId {
     [Required]
     public int Id { get; set; }
+    public Event Event { get; set; }
+    public int EventId { get; set; }
     public string VendorName { get; set; }
     public string VendorLead { get; set; }
     [Required]
@@ -272,13 +306,16 @@ public class Vendor : HasId {
     public IEnumerable<GolfCart> GolfCarts { get; set; }
     public IEnumerable<Catering> Meals { get; set; }
     public IEnumerable<Contact> Contacts { get; set; }
-    public IEnumerable<Task> Tasks { get; set; }
+    public IEnumerable<TaskAssign> Tasks { get; set; }
     public IEnumerable<Notification> Notifications { get; set; }
 }
 public class Credential : HasId {
     [Required]
     public int Id { get; set; }
     public double Cost { get; set; }
+    [Required]
+    public Event Event { get; set; }
+    public int EventId { get; set; }
     [Required]
     public string AccessType { get; set; } //confirm that this means that the user can set the type options themselves
     // figure out method to give user option to add/remove values to type
@@ -295,12 +332,14 @@ public class Credential : HasId {
     [Required]
     public Advance advance { get; set; }
     public int AdvanceId { get; set; } //foreign key
-    public IEnumerable<Notification> Notifications { get; set; }
     
 }
 public class StaffShirt : HasId {
     [Required]
     public int Id { get; set; }
+    [Required]
+    public Event Event { get; set; }
+    public int EventId { get; set; }
     public int NumOfShirts { get; set; }
     public string Cut { get; set; }
     [Required]
@@ -314,11 +353,13 @@ public class StaffShirt : HasId {
     [Required]
     public Advance advance { get; set; }
     public int AdvanceId { get; set; } //foreign key
-    public IEnumerable<Notification> Notifications { get; set; }
 }
 public class Parking : HasId {
     [Required]
     public int Id { get; set; }
+    [Required]
+    public Event Event { get; set; }
+    public int EventId { get; set; }
     [Required]
     public int NumOfPasses { get; set; }
     public double CostPerSpot { get; set; }
@@ -333,11 +374,12 @@ public class Parking : HasId {
     [Required]
     public Advance advance { get; set; }
     public int AdvanceId { get; set; } //foreign key
-    public IEnumerable<Notification> Notifications { get; set; }
 }
 public class Hotel : HasId {
     [Required]
     public int Id { get; set; }
+    public Event Event { get; set; }
+    public int EventId { get; set; }
     [Required]
     public DateTime CheckIn { get; set; }
     [Required]
@@ -360,12 +402,13 @@ public class Hotel : HasId {
     [Required]
     public Advance advance { get; set; }
     public int AdvanceId { get; set; } //foreign key
-    public IEnumerable<Notification> Notifications { get; set; }
 
 }
 public class PettyCash: HasId {
     [Required]
     public int Id { get; set; }
+    public Event Event { get; set; }
+    public int EventId { get; set; }
     [Required]
     public DateTime RequestedIssueDate { get; set; }
     [Required]
@@ -380,11 +423,13 @@ public class PettyCash: HasId {
     [Required]
     public Advance advance { get; set; }
     public int AdvanceId { get; set; } //foreign key
-    public IEnumerable<Notification> Notifications { get; set; }
+    
 }
 public class Radio : HasId {
     [Required]
     public int Id { get; set; }
+    public Event Event { get; set; }
+    public int EventId { get; set; }
     [Required]
     public string RadioType { get; set; }
     public int NumOfRadios { get; set; }
@@ -399,12 +444,14 @@ public class Radio : HasId {
     [Required]
     public Advance advance { get; set; }
     public int AdvanceId { get; set; } //foreign key
-    public IEnumerable<Notification> Notifications { get; set; }
+    
 
 }
 public class GolfCart : HasId {
     [Required]
     public int Id { get; set; }
+    public Event Event { get; set; }
+    public int EventId { get; set; }
     [Required]
     public string GCType { get; set; }
     public double GCCost { get; set; }
@@ -417,11 +464,13 @@ public class GolfCart : HasId {
     [Required]
     public Advance advance { get; set; }
     public int AdvanceId { get; set; } //foreign key
-    public IEnumerable<Notification> Notifications { get; set; }
+    
 }
 public class Catering : HasId {
     [Required]
     public int Id { get; set; }
+    public Event Event { get; set; }
+    public int EventId { get; set; }
     public string LocationName { get; set; } //onsite, hotel, stage X (x = stage name) 
     public string MealType { get; set; } //ie Breakfast, lunch, Dinner, BBoxed, LBoxed, DBoxed
     public double CostPerMealType { get; set; }
@@ -436,12 +485,13 @@ public class Catering : HasId {
     [Required]
     public Advance advance { get; set; }
     public int AdvanceId { get; set; } //foreign key
-    public IEnumerable<Notification> Notifications { get; set; }
+   
 }
 // declare the DbSet<T>'s of our DB context, thus creating the tables
 public partial class DB : IdentityDbContext<IdentityUser> {
+    public DbSet<Event> Events { get; set; }
     public DbSet<Notification> Notifications { get; set; }
-    public DbSet<Task> Tasks { get; set; }
+    public DbSet<TaskAssign> Tasks { get; set; }
     public DbSet<Advance> Advances { get; set; }
     public DbSet<Contact> Contacts { get; set; }
     public DbSet<Department> Departments { get; set; }
@@ -459,12 +509,16 @@ public partial class DB : IdentityDbContext<IdentityUser> {
 // create a Repo<T> services
 public partial class Handler {
     public void RegisterRepos(IServiceCollection services){
+        Repo<Event>.Register(services, "Events",
+            d => d.Include(n => n.Name)
+                .Include(e => e.EventStart)
+                .Include(e => e.EventEnd));
         Repo<Notification>.Register(services, "Notifications",
             d => d.Include(c => c.contact)
                 .ThenInclude(n => n.department.DeptName)
                 .Include(t => t.Title)
                 .Include(m => m.Message));
-        Repo<Task>.Register(services, "Tasks",
+        Repo<TaskAssign>.Register(services, "Tasks",
             d => d.Include(c => c.contact)
                 .ThenInclude(n => n.department.DeptName)
                 .Include(n => n.TaskName)
@@ -485,14 +539,20 @@ public partial class Handler {
                 .Include(l => l.LastName)
                 .Include(p => p.Position)
                 .Include(e => e.ContactEmail)
-                .Include(p => p.ContactPhone));
+                .Include(p => p.ContactPhone)
+                .Include(t => t.Tasks)
+                .Include(n => n.Notifications));
         Repo<Department>.Register(services, "Departments",
             d => d.Include(n => n.DeptName)
-                .Include(l => l.DeptLead));
+                .Include(l => l.DeptLead)
+                .Include(t => t.Tasks)
+                .Include(n => n.Notifications));
         Repo<Vendor>.Register(services, "Vendors",
             d => d.Include(n => n.department.DeptName)
                 .Include(n => n.VendorName)
-                .Include(c => c.VendorLead));
+                .Include(c => c.VendorLead)
+                .Include(t => t.Tasks)
+                .Include(n => n.Notifications));
         Repo<Credential>.Register(services, "Credentials",
             d => d.Include(n => n.department.DeptName)
                 .Include(a => a.AccessType)

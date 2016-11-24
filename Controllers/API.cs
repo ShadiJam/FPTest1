@@ -2,9 +2,18 @@ using Microsoft.AspNetCore.Mvc;
 using System.Linq;
 using Microsoft.EntityFrameworkCore;
 
-[Route("/api/task")]
-public class TaskController : CRUDController<Task> {
-    public TaskController(IRepository<Task> r) : base(r){}
+[Route("api/event")]
+public class EventController : CRUDController<Event> {
+    public EventController(IRepository<Event> r) : base(r){}
+}
+
+[Route("api/notification")]
+public class NotificationController : CRUDController<Notification> {
+    public NotificationController(IRepository<Notification> r) : base(r){}
+}
+[Route("/api/taskassign")]
+public class TaskAssignController : CRUDController<TaskAssign> {
+    public TaskAssignController(IRepository<TaskAssign> r) : base(r){}
 
     [HttpGet("search")]
     public IActionResult Search([FromQuery]string term, int listId = -1){
