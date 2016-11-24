@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Mvc;
 using System.Linq;
 using Microsoft.EntityFrameworkCore;
 
+/*
 [Route("api/event")]
 public class EventController : CRUDController<Event> {
     public EventController(IRepository<Event> r) : base(r){}
@@ -23,12 +24,6 @@ public class TaskingController : CRUDController<Tasking> {
         )));
     }
 }
-
-[Route("/api/advance")]
-public class AdvanceController : CRUDController<Advance> {
-    public AdvanceController(IRepository<Advance> r) : base(r){}
-}
-
 [Route("/api/contact")]
 public class ContactController : CRUDController<Contact> {
     public ContactController(IRepository<Contact> r) : base(r){}
@@ -42,15 +37,28 @@ public class DepartmentController : CRUDController<Department> {
 public class VendorController : CRUDController<Vendor> {
     public VendorController(IRepository<Vendor> r) : base(r){}
 }
+*/
+
+[Route("/api/advance")]
+public class AdvanceController : CRUDController<Advance> {
+    public AdvanceController(IRepository<Advance> r) : base(r){}
+    [HttpGet("search")]
+    public IActionResult Search([FromQuery]string term, int listId = -1){
+        return Ok(r.Read(dbset => dbset.Where(advance => 
+            advance.Department.ToLower().IndexOf(term.ToLower()) != -1
+            || advance.DepartmentLead.ToLower().IndexOf(term.ToLower()) != -1
+            || advance.EventName.ToLower().IndexOf(term.ToLower()) != -1
+        ))); // figure out how to search by duedate
+}
 
 [Route("/api/credential")]
 public class CredentialController : CRUDController<Credential> {
     public CredentialController(IRepository<Credential> r) : base(r){}
 }
 
-[Route("/api/staffshirt")]
-public class StaffShirtController : CRUDController<StaffShirt> {
-    public StaffShirtController(IRepository<StaffShirt> r) : base(r){}
+[Route("/api/shirt")]
+public class ShirtController : CRUDController<Shirt> {
+    public ShirtController(IRepository<Shirt> r) : base(r){}
 }
 
 [Route("/api/parking")]

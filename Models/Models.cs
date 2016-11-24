@@ -130,7 +130,7 @@ Roles
 **Look into adding functionality that allows user to submit spreadsheet of proposed costs
 **Find out if I need to include both Advance advance AND list of advances to each class 
 
-*/
+
 public class Event : HasId {
     public int Id { get; set; }
     public string Name { get; set; }
@@ -588,4 +588,153 @@ public partial class Handler {
                 .Include(l => l.LocationName)
                 .Include(m => m.MealType));
     }
+}
+*/
+public class Advance : HasId {
+    [Required]
+    public int Id { get; set; }
+    public string EventName { get; set; }
+    public string Department { get; set; }
+    public string DepartmentLead { get; set; }
+    public DateTime DueDate { get; set; }
+    public IEnumerable<Credential> Credentials { get; set; }
+    public IEnumerable<Shirt> Shirts { get; set; }
+    public IEnumerable<Parking> Passes { get; set; }
+    public IEnumerable<PettyCash> Amounts { get; set; }
+    public IEnumerable<Hotel> Rooms { get; set; }
+    public IEnumerable<Radio> Radios { get; set; }
+    public IEnumerable<GolfCart> Carts { get; set; }
+    public IEnumerable<Catering> Meals { get; set; }
+}
+public class Credential : HasId {
+    [Required]
+    public int Id { get; set; }
+    [Required]
+    public Advance advance { get; set; }
+    [Required]
+    public int AdvanceId { get; set; }
+    public string CredType { get; set; }
+    public string AccessLevel { get; set; }
+    public string Color { get; set; }
+    public double Cost { get; set; }
+}
+
+public class Shirt : HasId {
+    [Required]
+    public int Id { get; set; }
+    [Required]
+    public Advance advance { get; set; }
+    [Required]
+    public int AdvanceId { get; set; }
+    public string Size { get; set; }
+    public double Cost { get; set; }
+}
+
+public class Parking : HasId {
+    [Required]
+    public int Id { get; set; }
+    [Required]
+    public Advance advance { get; set; }
+    [Required]
+    public int AdvanceId { get; set; }
+    public string PassType { get; set; }
+    public DateTime WeekDay { get; set; }
+    public string Location { get; set; }
+    public double Cost { get; set; }
+}
+
+public class PettyCash : HasId {
+    [Required]
+    public int Id { get; set; }
+    [Required]
+    public Advance advance { get; set; }
+    [Required]
+    public int AdvanceId { get; set; }
+    public double AmountRequested { get; set; }
+    public double AmountApproved { get; set; }
+    public DateTime PCNeededBy { get; set; }
+    
+}
+
+public class Hotel : HasId {
+    [Required]
+    public int Id { get; set; }
+    [Required]
+    public Advance advance { get; set; }
+    [Required]
+    public int AdvanceId { get; set; }
+    public string OccupantName { get; set; }
+    public string RoomType { get; set; }
+    public DateTime CheckIn { get; set; }
+    public DateTime CheckOut { get; set; }
+    public bool EventExpense { get; set; } =  false;
+    public double Cost { get; set; }
+}
+
+public class Radio : HasId {
+    [Required]
+    public int Id { get; set; }
+    [Required]
+    public Advance advance { get; set; }
+    [Required]
+    public int AdvanceId { get; set; }
+    public string RadioType { get; set; }
+    public bool ExtraBattery { get; set; }
+    public bool ExtraHeadSet { get; set; }
+    public double Cost { get; set; }
+}
+
+public class GolfCart : HasId {
+    [Required]
+    public int Id { get; set; }
+    [Required]
+    public Advance advance { get; set; }
+    [Required]
+    public int AdvanceId { get; set; }
+    public string CartType { get; set; }
+    public double Cost { get; set; }
+}
+
+public class Catering : HasId {
+    [Required]
+    public int Id { get; set; }
+    [Required]
+    public Advance advance { get; set; }
+    public int AdvanceId { get; set; }
+    public string Location { get; set; } // Hotel, CateringTent, Stage
+    public string MealType { get; set; } // Breakfast, Lunch, Dinner, BoxBrek, BoxLunch, BoxDin
+    public bool EventDays { get; set; } = false;
+    public DateTime StartDate { get; set; }
+    public DateTime EndDate { get; set; }
+    public double Cost { get; set; }
+}
+
+public partial class DB : IdentityDbContext<IdentityUser> {
+    
+    public DbSet<Advance> Advances { get; set; }
+    public DbSet<Credential> Credentials { get; set; }
+    public DbSet<Shirt> Shirts { get; set; }
+    public DbSet<Parking> Passes { get; set; }
+    public DbSet<Hotel> Hotels { get; set; }
+    public DbSet<PettyCash> Amounts { get; set; }
+    public DbSet<Radio> Radios { get; set; }
+    public DbSet<GolfCart> Carts { get; set; }
+    public DbSet<Catering> Meals { get; set; }
+}
+
+public partial class Handler {
+     public void RegisterRepos(IServiceCollection services){
+        Repo<Advance>.Register(services, "Advances",
+            d => d.Include(n => n.EventName)
+                .Include(l => l.DepartmentLead)
+                .Include(u => u.DueDate)
+                .Include(c => c.Credentials) 
+                .Include(s => s.Shirts)
+                .Include(p => p.Passes)
+                .Include(h => h.Rooms)
+                .Include(a => a.Amounts)
+                .Include(r => r.Radios)
+                .Include(g => g.Carts)
+                .Include(m => m.Meals));
+     }
 }
