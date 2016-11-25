@@ -590,21 +590,82 @@ public partial class Handler {
     }
 }
 */
+public class Employee : HasId {
+    [Required]
+    public int Id { get; set; }
+    [Required]
+    public string firstName { get; set; }
+    [Required]
+    public string lastName { get; set; }
+    [Required]
+    public string department { get; set; }
+    [Required]
+    public string phone { get; set; }
+    [Required]
+    public string email { get; set; }
+    public Employee(string firstName = "", string lastName = "", string department = "", string phone = "", string email = ""){
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.department = department;
+        this.phone = phone;
+        this.email = email;
+    }
+} // consider adding eventName to employee properties
+
+public class Location : HasId {
+    [Required]
+    public int Id { get; set; }
+    [Required]
+    public string name { get; set; }
+    public double lattitude { get; set; }
+    public double longitude { get; set; }
+    public Location(string name = "", double lattitude = 0, double longitude = 0){
+        this.name = name;
+        this.lattitude = lattitude;
+        this.longitude = longitude;
+    }
+}
 public class Advance : HasId {
     [Required]
     public int Id { get; set; }
-    public string EventName { get; set; }
-    public string Department { get; set; }
-    public string DepartmentLead { get; set; }
-    public DateTime DueDate { get; set; }
-    public IEnumerable<Credential> Credentials { get; set; }
-    public IEnumerable<Shirt> Shirts { get; set; }
-    public IEnumerable<Parking> Passes { get; set; }
-    public IEnumerable<PettyCash> Amounts { get; set; }
-    public IEnumerable<Hotel> Rooms { get; set; }
-    public IEnumerable<Radio> Radios { get; set; }
-    public IEnumerable<GolfCart> Carts { get; set; }
-    public IEnumerable<Catering> Meals { get; set; }
+    [Required]
+    public string eventName { get; set; }
+    [Required]
+    public string department { get; set; }
+    [Required]
+    public Employee employee { get; set; }
+    public int EmployeeId { get; set; }
+    [Required]
+    public DateTime dueDate { get; set; }
+    public bool wasSent { get; set; }
+    public bool wasSubmitted { get; set; }
+    public bool wasApproved { get; set; }
+    public IEnumerable<Location> Locations { get; set; }
+    public IEnumerable<Credential> Credentials { get; set; } 
+    public IEnumerable<Shirt> Shirts { get; set; } 
+    public IEnumerable<Parking> Passes { get; set; } 
+    public IEnumerable<PettyCash> Amounts { get; set; } 
+    public IEnumerable<Hotel> Rooms { get; set; } 
+    public IEnumerable<Radio> Radios { get; set; } 
+    public IEnumerable<GolfCart> Carts { get; set; } 
+    public IEnumerable<Catering> Meals { get; set; } 
+    public Advance(string eventName = "", string department = "", DateTime dueDate = default(DateTime), bool sent = false, bool submitted = false, bool approved = false){
+        this.eventName = eventName;
+        this.department = department;
+        this.dueDate = dueDate;
+        wasSent = sent;
+        wasSubmitted = submitted;
+        wasApproved = approved;
+        Locations = new List<Location>();
+        Credentials = new List<Credential>();
+        Shirts = new List<Shirt>();
+        Passes = new List<Parking>();
+        Amounts = new List<PettyCash>();
+        Rooms = new List<Hotel>();
+        Radios = new List<Radio>();
+        Carts = new List<GolfCart>();
+        Meals = new List<Catering>();
+    }
 }
 public class Credential : HasId {
     [Required]
@@ -613,10 +674,16 @@ public class Credential : HasId {
     public Advance advance { get; set; }
     [Required]
     public int AdvanceId { get; set; }
-    public string CredType { get; set; }
-    public string AccessLevel { get; set; }
-    public string Color { get; set; }
-    public double Cost { get; set; }
+    public string credType { get; set; }
+    public string accessLevel { get; set; }
+    public string color { get; set; }
+    public double cost { get; set; }
+    public Credential(string credType = "", string accessLevel = "", string color = "", double cost = 0){
+        this.credType = credType;
+        this.accessLevel = accessLevel;
+        this.color = color;
+        this.cost = cost;
+    }
 }
 
 public class Shirt : HasId {
@@ -626,8 +693,12 @@ public class Shirt : HasId {
     public Advance advance { get; set; }
     [Required]
     public int AdvanceId { get; set; }
-    public string Size { get; set; }
-    public double Cost { get; set; }
+    public string size { get; set; }
+    public double cost { get; set; }
+    public Shirt(string size = "", double cost = 0){
+        this.size = size;
+        this.cost = cost;
+    }
 }
 
 public class Parking : HasId {
@@ -637,10 +708,16 @@ public class Parking : HasId {
     public Advance advance { get; set; }
     [Required]
     public int AdvanceId { get; set; }
-    public string PassType { get; set; }
-    public DateTime WeekDay { get; set; }
-    public string Location { get; set; }
-    public double Cost { get; set; }
+    public string passType { get; set; }
+    public DateTime weekDay { get; set; }
+    public IEnumerable<Location> Locations { get; set; }
+    public double cost { get; set; }
+    public Parking(string passType = "", DateTime weekDay = default(DateTime), double cost = 0){
+        this.passType = passType;
+        this.weekDay = weekDay;
+        this.cost = cost;
+        Locations = new List<Location>();
+    }
 }
 
 public class PettyCash : HasId {
@@ -650,9 +727,15 @@ public class PettyCash : HasId {
     public Advance advance { get; set; }
     [Required]
     public int AdvanceId { get; set; }
-    public double AmountRequested { get; set; }
-    public double AmountApproved { get; set; }
-    public DateTime PCNeededBy { get; set; }
+    public double amountRequested { get; set; }
+    public double amountApproved { get; set; }
+    public DateTime pcNeededBy { get; set; }
+    public string issueTo { get; set; }
+    public PettyCash(double amountRequested = 0, double amountApproved = 0, DateTime pcNeededBy = default(DateTime)){
+        this.amountRequested = amountRequested;
+        this.amountApproved = amountApproved;
+        this.pcNeededBy = pcNeededBy;
+    }
     
 }
 
@@ -663,12 +746,24 @@ public class Hotel : HasId {
     public Advance advance { get; set; }
     [Required]
     public int AdvanceId { get; set; }
-    public string OccupantName { get; set; }
-    public string RoomType { get; set; }
-    public DateTime CheckIn { get; set; }
-    public DateTime CheckOut { get; set; }
-    public bool EventExpense { get; set; } =  false;
-    public double Cost { get; set; }
+    public string occupantName { get; set; }
+    public string roomType { get; set; }
+    public DateTime checkIn { get; set; }
+    public DateTime checkOut { get; set; }
+    public bool eventPaysExpense { get; set; } 
+    public string billTo { get; set; }
+    public double cost { get; set; }
+    public IEnumerable<Location> Locations { get; set; }
+    public Hotel(string occupantName = "", string roomType = "", DateTime checkIn = default(DateTime), DateTime checkOut = default(DateTime), bool eventPays = false, string billTo = "", double cost = 0){
+        this.occupantName = occupantName;
+        this.roomType = roomType;
+        this.checkIn = checkIn;
+        this.checkOut = checkOut;
+        eventPaysExpense = eventPays;
+        this.billTo = billTo;
+        this.cost = cost;
+        Locations = new List<Location>();
+    }
 }
 
 public class Radio : HasId {
@@ -678,10 +773,16 @@ public class Radio : HasId {
     public Advance advance { get; set; }
     [Required]
     public int AdvanceId { get; set; }
-    public string RadioType { get; set; }
-    public bool ExtraBattery { get; set; }
-    public bool ExtraHeadSet { get; set; }
-    public double Cost { get; set; }
+    public string radioType { get; set; }
+    public bool hasExtraBattery { get; set; }
+    public bool hasExtraHeadSet { get; set; }
+    public double cost { get; set; }
+    public Radio(string radioType = "", bool extraBattery = false, bool extraHeadSet = false, double cost = 0){
+        this.radioType = radioType;
+        hasExtraBattery = extraBattery;
+        hasExtraHeadSet = extraHeadSet;
+        this.cost = cost;
+    }
 }
 
 public class GolfCart : HasId {
@@ -691,8 +792,12 @@ public class GolfCart : HasId {
     public Advance advance { get; set; }
     [Required]
     public int AdvanceId { get; set; }
-    public string CartType { get; set; }
-    public double Cost { get; set; }
+    public string cartType { get; set; }
+    public double cost { get; set; }
+    public GolfCart(string cartType = "", double cost = 0){
+        this.cartType = cartType;
+        this.cost = cost;
+    }
 }
 
 public class Catering : HasId {
@@ -701,16 +806,25 @@ public class Catering : HasId {
     [Required]
     public Advance advance { get; set; }
     public int AdvanceId { get; set; }
-    public string Location { get; set; } // Hotel, CateringTent, Stage
-    public string MealType { get; set; } // Breakfast, Lunch, Dinner, BoxBrek, BoxLunch, BoxDin
-    public bool EventDays { get; set; } = false;
-    public DateTime StartDate { get; set; }
-    public DateTime EndDate { get; set; }
-    public double Cost { get; set; }
+    public IEnumerable<Location> Locations { get; set; } // Hotel, CateringTent, Stage
+    public string mealType { get; set; } // Breakfast, Lunch, Dinner, BoxBrek, BoxLunch, BoxDin
+    public bool duringEventDays { get; set; } = false;
+    public DateTime startDate { get; set; }
+    public DateTime endDate { get; set; }
+    public double cost { get; set; }
+    public Catering(string location = "", string mealType = "", bool eventDays = false, DateTime startDate = default(DateTime), DateTime endDate = default(DateTime), double cost = 0){
+        this.mealType = mealType;
+        duringEventDays = eventDays;
+        this.startDate = startDate;
+        this.endDate = endDate;
+        this.cost = cost;
+        Locations = new List<Location>();
+    }
 }
 
 public partial class DB : IdentityDbContext<IdentityUser> {
-    
+    public DbSet<Employee> Employees { get; set; }
+    public DbSet<Location> Locations { get; set; }
     public DbSet<Advance> Advances { get; set; }
     public DbSet<Credential> Credentials { get; set; }
     public DbSet<Shirt> Shirts { get; set; }
@@ -725,9 +839,11 @@ public partial class DB : IdentityDbContext<IdentityUser> {
 public partial class Handler {
      public void RegisterRepos(IServiceCollection services){
         Repo<Advance>.Register(services, "Advances",
-            d => d.Include(n => n.EventName)
-                .Include(l => l.DepartmentLead)
-                .Include(u => u.DueDate)
+            d => d.Include(n => n.eventName)
+                .Include(s => s.department)
+                .Include(e => e.employee)
+                .Include(u => u.dueDate)
+                .Include(l => l.Locations)
                 .Include(c => c.Credentials) 
                 .Include(s => s.Shirts)
                 .Include(p => p.Passes)

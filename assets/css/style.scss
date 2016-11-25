@@ -1,5 +1,5 @@
-/*@import "../../node_modules/normalize.css/normalize.css";*/
 @import "../../node_modules/@blueprintjs/core/dist/blueprint.css";
+
 
 *, *:before, *:after {
     box-sizing: border-box;
@@ -20,6 +20,10 @@
         display: inline-block;
         width: 100%;
     }
+}
+
+.pt-button {
+    margin: 20px;
 }
 
 @define-mixin grid_r $col, $width, $margin=0 {

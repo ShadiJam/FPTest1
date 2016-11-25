@@ -10,6 +10,7 @@ console.log(BLUE);
 
 // Utility methods
 // --------------
+
 const log = (...a) => console.log(...a)
 
 const get = (url) =>
@@ -54,13 +55,13 @@ class RegisterBox extends Component {
     render() {
         return (
             <form id="register-form" onSubmit={this._handleSubmit}>
-        
+                <hr />
                 <p> Or Create an account: </p>
-                <div>
-                    <input name="theEmail" ref="Email" type="email" placeholder="user@email.com" required/>
-                    <input name="thePassword" ref="Password" type="password" placeholder="Your Password"/>
+                <div className="pt-input-group .modifier">
+                    <input name="theEmail" className="pt-round" ref="Email" type="email" placeholder="user@email.com" required/>
+                    <input name="thePassword" className="pt-round" ref="Password" type="password" placeholder="Your Password"/>
                 </div>
-                    <button type="submit">Register</button>
+                    <button type="submit">Go</button>
             </form> 
         )
     }
@@ -91,13 +92,13 @@ class LoginBox extends Component {
     render() {
         return (
             <form id="login-form" onSubmit={this._handleSubmit}>
-        
+                <hr/>
                 <p> Login: </p>
-                <div>
-                    <input name="theEmail" ref="Email" type="email" placeholder="user@email.com" required/>
-                    <input name="thePassword" ref="Password" type="password" placeholder="Your Password"/>
+                <div className="pt-input-group .modifier">
+                    <input name="theEmail" className="pt-round" ref="Email" type="email" placeholder="user@email.com" required/>
+                    <input name="thePassword" className="pt-round" ref="Password" type="password" placeholder="Your Password"/>
                 </div>
-                    <button type="submit">Login</button>
+                    <button type="submit">Go</button>
             </form> 
         )
     }
@@ -106,8 +107,6 @@ const Layout = ({children}) =>
     <div>
         <div>
             <div><Nav/></div>
-            <div><Breadcrumbs/></div>
-            <div><Table/></div>
         </div>
         <hr/>
         <div>
@@ -117,16 +116,16 @@ const Layout = ({children}) =>
 const Nav = () => 
     <nav className="pt-navbar pt-dark pt-fixed-top">
         <div className="pt-navbar-group pt-align-left">
-            <div className="pt-navbar-heading">EventAdvance</div>
+            <div className="pt-navbar-heading">Event Advance 2016</div>
             <input className="pt-input" placeholder="Search files..." type="text" />
         </div>
         <div className="pt-navbar-group pt-align-right">
             <button className="pt-button pt-minimal pt-icon-home">Home</button>
-            <button className="pt-button pt-minimal pt-icon-document">Notifications</button>
+            <button className="pt-button pt-minimal pt-icon-send-to-graph">Notifications</button>
             <span className="pt-navbar-divider"></span>
             <button className="pt-button pt-minimal pt-icon-user">Events</button>
-            <button className="pt-button pt-minimal pt-icon-notifications">Tasks</button>
-            <button className="pt-button pt-minimal pt-icon-cog">Advance</button>
+            <button className="pt-button pt-minimal pt-icon-pin">Tasks</button>
+            <button className="pt-button pt-minimal pt-icon-cog">Account</button>
         </div>
     </nav>
 
@@ -173,6 +172,7 @@ const Home = () =>
     <div>
         <Nav />
         <Breadcrumbs />
+        <Table />
         <hr />
         <div className="grid grid-3-600">
             {[
@@ -200,8 +200,10 @@ class Login extends Component {
         } 
         return (
             <div className="login-stuff">
-                <RegisterBox />
+                <hr />
                 <LoginBox />
+                <hr />
+                <RegisterBox />
             </div>
         )
     }
