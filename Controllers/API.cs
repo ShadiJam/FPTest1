@@ -38,6 +38,11 @@ public class VendorController : CRUDController<Vendor> {
     public VendorController(IRepository<Vendor> r) : base(r){}
 }
 */
+[Route("api/event")]
+public class EventController : CRUDController<Event> {
+    public EventController(IRepository<Event> r) : base(r){}
+}
+
 [Route("api/employee")]
 public class EmployeeController : CRUDController<Employee> {
     public EmployeeController(IRepository<Employee> r) : base(r){}
@@ -51,13 +56,6 @@ public class LocationController : CRUDController<Location> {
 [Route("/api/advance")]
 public class AdvanceController : CRUDController<Advance> {
     public AdvanceController(IRepository<Advance> r) : base(r){}
-    [HttpGet("search")]
-    public IActionResult Search([FromQuery]string term, int listId = -1){
-        return Ok(r.Read(dbset => dbset.Where(advance => 
-            advance.department.ToLower().IndexOf(term.ToLower()) != -1
-            || advance.eventName.ToLower().IndexOf(term.ToLower()) != -1
-        ))); // figure out how to search by duedate
-    }
 }
 
 [Route("/api/credential")]

@@ -28,7 +28,7 @@ const post = (url, data) =>
     .catch(e => log(e))
     .then(r => r.json())
 // ----------------
-
+/*
 class RegisterBox extends Component {
     constructor(props){
         super(props)
@@ -57,7 +57,7 @@ class RegisterBox extends Component {
             <form id="register-form" onSubmit={this._handleSubmit}>
                 <hr />
                 <p> Or Create an account: </p>
-                <div className="pt-input-group .modifier">
+                <div className="pt-input-group">
                     <input name="theEmail" className="pt-round" ref="Email" type="email" placeholder="user@email.com" required/>
                     <input name="thePassword" className="pt-round" ref="Password" type="password" placeholder="Your Password"/>
                 </div>
@@ -94,7 +94,7 @@ class LoginBox extends Component {
             <form id="login-form" onSubmit={this._handleSubmit}>
                 <hr/>
                 <p> Login: </p>
-                <div className="pt-input-group .modifier">
+                <div className="pt-input-group">
                     <input name="theEmail" className="pt-round" ref="Email" type="email" placeholder="user@email.com" required/>
                     <input name="thePassword" className="pt-round" ref="Password" type="password" placeholder="Your Password"/>
                 </div>
@@ -103,88 +103,6 @@ class LoginBox extends Component {
         )
     }
 }
-const Layout = ({children}) =>
-    <div>
-        <div>
-            <div><Nav/></div>
-        </div>
-        <hr/>
-        <div>
-        {children}
-        </div>
-    </div>
-const Nav = () => 
-    <nav className="pt-navbar pt-dark pt-fixed-top">
-        <div className="pt-navbar-group pt-align-left">
-            <div className="pt-navbar-heading">Event Advance 2016</div>
-            <input className="pt-input" placeholder="Search files..." type="text" />
-        </div>
-        <div className="pt-navbar-group pt-align-right">
-            <button className="pt-button pt-minimal pt-icon-home">Home</button>
-            <button className="pt-button pt-minimal pt-icon-send-to-graph">Notifications</button>
-            <span className="pt-navbar-divider"></span>
-            <button className="pt-button pt-minimal pt-icon-user">Events</button>
-            <button className="pt-button pt-minimal pt-icon-pin">Tasks</button>
-            <button className="pt-button pt-minimal pt-icon-cog">Account</button>
-        </div>
-    </nav>
-
-const Breadcrumbs = () =>
-    <ul className="pt-breadcrumbs">
-        {["Home", "Tasks", "Advance"].map(x => 
-            <li><BLUE.Breadcrumb text={x} /></li>
-        )}
-    </ul>
-
-const Card = ({title="IM DA BOSS", message="and you ain't", url="#"}) => 
-    <div className="pt-card pt-elevation-1 pt-interactive">
-        <h5><a href={url}>{title}</a></h5>
-        <p>{message}</p>
-    </div>
-
-const Table = () => 
-    <table className="pt-table pt-interactive pt-bordered">
-        <thead>
-            <th>Events</th>
-            <th>Notifications</th>
-            <th>Tasks</th>
-        </thead>
-        <tbody>
-            <tr>
-            <td>Blueprint</td>
-            <td>CSS framework and UI toolkit</td>
-            <td>Sass, TypeScript, React</td>
-            </tr>
-            <tr>
-            <td>TSLint</td>
-            <td>Static analysis linter for TypeScript</td>
-            <td>TypeScript</td>
-            </tr>
-            <tr>
-            <td>Plottable</td>
-            <td>Composable charting library built on top of D3</td>
-            <td>SVG, TypeScript, D3</td>
-            </tr>
-        </tbody>
-    </table>
-
-const Home = () => 
-    <div>
-        <Nav />
-        <Breadcrumbs />
-        <Table />
-        <hr />
-        <div className="grid grid-3-600">
-            {[
-                {title: "TEST TITLE", message: "TEST MESSAGE"},
-                {title: "TEST TITLE", message: "TEST MESSAGE"},
-                {title: "TEST TITLE", message: "TEST MESSAGE"}
-            ].map(x => [<Card {...x} />, " "] )}
-        </div>
-        <div className="grid">
-            <Table />
-        </div>
-    </div>
 
 class Login extends Component {
     constructor(props){
@@ -208,12 +126,145 @@ class Login extends Component {
         )
     }
 }
+*/
+const Error = () => <div>Page Not Found</div>
+const Event = (event) =>
+    <a className="event" href={`#/status/${event.id}`}>
+        <h1>{event.name}</h1>
+    </a>
+const Layout = ({children}) =>
+    <div>
+        <div>
+            <div><Nav/></div>
+        </div>
+        <hr/>
+        {children}
+    </div>
+const Nav = () => 
+    <nav className="pt-navbar pt-dark pt-fixed-top">
+        <div className="pt-navbar-group pt-align-left">
+            <div className="pt-navbar-heading">Event Advance 2016</div>
+            <input className="pt-input" placeholder="Search files..." type="text" />
+        </div>
+        <div className="pt-navbar-group pt-align-right">
+            <button className="pt-button pt-minimal pt-icon-home">Home</button>
+            <button className="pt-button pt-minimal pt-icon-send-to-graph">Notifications</button>
+            <span className="pt-navbar-divider"></span>
+            <button className="pt-button pt-minimal pt-icon-user">Events</button>
+            <button className="pt-button pt-minimal pt-icon-pin">Tasks</button>
+            <button className="pt-button pt-minimal pt-icon-cog">Account</button>
+        </div>
+    </nav>
+
+
+
+
+
+class Home extends Component {
+    constructor(props){
+        super(props)
+        this.state = {
+            items: []
+        }
+    }
+    componentDidMount(){
+        get('api/event').then(events => {
+            events = events.reverse()
+            this.setState({items: events})
+        }).catch(e => log(e))
+    }
+    render(){
+        return <div className="grid grid-3-600">
+                    {this.state.items.map(Event)}
+                <hr/>
+                <a className="createEventLink" href="#/create-event">
+                    <button>Create New Event</button>
+                </a>
+            </div>
+    }
+} 
+class CreateEvent extends Component {
+    constructor(props){
+        super(props)
+        this.state = {}
+    }
+    _handleSubmit(eventObject){
+        eventObject.preventDefault()
+        var formE1 = eventObject.target
+        window.form = formE1
+        var inputName = formE1.theName.value,
+            inputLocation = formE1.theLocation.value,
+            inputStartDate = formE1.theStart.value,
+            inputEndDate = formE1.theEnd.value
+        var promise = post('/api/event', {
+            name: inputName,
+            location: inputLocation,
+            startDate: inputStartDate,
+            endDate: inputEndDate
+        })
+        promise.then(
+            (resp) => console.log(resp),
+            (err) => console.log(err)
+        )
+    }
+    render(){
+
+        return (
+            <form className="new-event-form" onSubmit={this._handleSubmit}>
+
+            <div>
+                <input ref="theName" ref="Name" type="text" placeHolder="Event Name" required />
+                <input ref="theLocation" ref="Location" type="text" placeHolder="Event Location" required />
+                <input ref="theStartDate" ref="StartDate" type="dateTime" placeHolder="Event Start Date" required />
+                <input ref="theEndDate" ref="EndDate" type="dateTime" placeHolder="Event End Date" required />
+            </div>
+                <a className="add-event" href={`#/status/${x.id}`}>
+                <button type="submit">Add Event</button>
+                </a>
+        </form>
+        )
+    }
+}    
+
+class EventPage extends Component {
+    constructor(props){
+        super(props)
+        this.state = { id: props.params.id }
+    }
+    componentDidMount(){
+        get('api/event/'+this.state.id).then(x => {
+            this.setState({ item: x })
+        })
+    }
+    render() {
+        const item = this.state.item
+        if(!item)
+            return <div/>
+        
+        return<div className="event-page">
+            <h5>{item.name}</h5>
+            <hr/>
+            <h1>{item.location}</h1>
+            <hr/>
+            <p>{item.startDate}</p>
+            <p>{item.endDate}</p>
+            <hr/>
+            <a className="create-advance" href="/create-advance">
+            <button>Create New Advance</button>
+            </a>
+        </div>
+    }
+}
+
 
 const reactApp = () => 
     render(
     <Layout>
         <Router history={hashHistory}>
-            <Route path="/" component={Login}/>
+            <Route path="/" component={Home}/>
+            <Route path="/status/:id" component={EventPage}/>
+            <Route path="/create-event" component={CreateEvent}/>
+            <Route path="*" component={Error}/>
         </Router>
     </Layout>,
     document.querySelector('.app'))
